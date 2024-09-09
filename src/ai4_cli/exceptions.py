@@ -41,7 +41,7 @@ class BaseHTTPError(BaseError):
     """The base exception class for all HTTP exceptions."""
 
     message = "HTTP error: %(code)s"
-    code = 0
+    http_status = 500
 
 
 class BadRequestError(BaseHTTPError):

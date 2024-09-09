@@ -1,7 +1,7 @@
 """Utilities for the AI4 CLI."""
 
 import os
-import typing
+from typing import Union, List, Literal
 
 import rich.panel
 
@@ -11,11 +11,11 @@ from ai4_cli import exceptions
 
 _TERMINAL_WIDTH = os.getenv("TERMINAL_WIDTH")
 MAX_WIDTH = int(_TERMINAL_WIDTH) if _TERMINAL_WIDTH else None
-ALIGN_ERRORS_PANEL: typing.Literal["left", "center", "right"] = "left"
+ALIGN_ERRORS_PANEL: Literal["left", "center", "right"] = "left"
 STYLE_ERRORS_PANEL_BORDER = "bold red"
-ALIGN_WARNING_PANEL: typing.Literal["left", "center", "right"] = "left"
+ALIGN_WARNING_PANEL: Literal["left", "center", "right"] = "left"
 STYLE_WARNING_PANEL_BORDER = "bold yellow"
-ALIGN_OK_PANEL: typing.Literal["left", "center", "right"] = "left"
+ALIGN_OK_PANEL: Literal["left", "center", "right"] = "left"
 STYLE_OK_PANEL_BORDER = "bold green"
 STYLE_TABLE_BORDER = "bold blue"
 
@@ -27,7 +27,7 @@ def _get_rich_console(stderr: bool = False) -> rich.console.Console:
     )
 
 
-def format_rich_error(error: exceptions.BaseExceptionError) -> None:
+def format_rich_error(error: exceptions.BaseError) -> None:
     """Format an error using rich."""
     console = _get_rich_console(stderr=True)
     console.print(
@@ -41,7 +41,7 @@ def format_rich_error(error: exceptions.BaseExceptionError) -> None:
     )
 
 
-def format_rich_warning(error: typing.Union[str, Exception]) -> None:
+def format_rich_warning(error: Union[str, Exception]) -> None:
     """Format a warning using rich."""
     console = _get_rich_console(stderr=True)
     console.print(
@@ -70,8 +70,8 @@ def format_rich_ok(message: str) -> None:
 
 
 def format_list(
-    columns: typing.List[str],
-    items: typing.List[str],
+    columns: List[str],
+    items: Union[List[str], List[List[str]]],
 ) -> None:
     """Format a list of items using rich."""
     table = rich.table.Table(

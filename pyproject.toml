@@ -66,6 +66,7 @@ bandit = "^1.7.9"
 
 [tool.poetry.group.test-mypy.dependencies]
 mypy = "^1.11.2"
+types-requests = "^2.32.0.20240907"
 
 
 [tool.poetry.group.test-pip-missing-reqs.dependencies]

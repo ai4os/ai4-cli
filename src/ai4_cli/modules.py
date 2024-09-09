@@ -28,7 +28,7 @@ def list(
             "-a",
             help="The version of the API to use.",
         ),
-    ] = "v1",
+    ] = client.APIVersion.v1,
     long: Annotated[
         bool,
         typer.Option(

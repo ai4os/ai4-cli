@@ -1,7 +1,7 @@
 """Utilities for the AI4 CLI."""
 
 import os
-from typing import Union, List, Literal
+from typing import List, Literal, Union
 
 import rich.panel
 

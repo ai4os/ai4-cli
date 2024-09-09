@@ -4,6 +4,7 @@ import copy
 import enum
 import hashlib
 import json
+import logging
 from urllib import parse
 
 import requests
@@ -31,11 +32,15 @@ class AI4Client(object):
         """
         self.endpoint = endpoint
 
-        self.version = version
+        if version in APIVersion:
+            self.version = version
+        else:
+            raise exceptions.InvalidUsageError("Invalid API version: %s" % version)
 
-        self.url = parse.urljoin(self.endpoint, self.version.value + "/")
+        self.url = parse.urljoin(self.endpoint, self.version + "/")
 
         self._modules = modules._Modules(self)
+        self._logger = logging.getLogger(__name__)
 
         self.session = requests.Session()
         self.http_debug = http_debug

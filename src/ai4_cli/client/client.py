@@ -13,7 +13,7 @@ from ai4_cli.client import modules
 from ai4_cli import exceptions
 
 
-class APIVersion(enum.Enum):
+class APIVersion(str, enum.Enum):
     """Supported API versions."""
 
     v1 = "v1"

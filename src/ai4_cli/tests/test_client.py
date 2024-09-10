@@ -288,5 +288,5 @@ def test_http_log_resp_error_response(ai4_client, response_data):
 
     ai4_client._logger.debug.assert_called_once_with(
         "RESP: [%(status)s] %(headers)s\nRESP BODY: %(text)s\n",
-        {"status": 400, "headers": {}, "text": "null"},
+        {"status": 400, "headers": {}, "text": '{"error": "Invalid request"}'},
     )

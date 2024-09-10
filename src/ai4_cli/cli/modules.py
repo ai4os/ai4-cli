@@ -26,8 +26,9 @@ def list(
     """List all modules."""
     endpoint = ctx.obj.endpoint
     version = ctx.obj.api_version
+    debug = ctx.obj.debug
 
-    cli = client.AI4Client(endpoint, version)
+    cli = client.AI4Client(endpoint, version, http_debug=debug)
     resp, content = cli.modules.list()
 
     if long:
@@ -60,8 +61,9 @@ def show(
     """Show details of a module."""
     endpoint = ctx.obj.endpoint
     version = ctx.obj.api_version
+    debug = ctx.obj.debug
 
-    cli = client.AI4Client(endpoint, version)
+    cli = client.AI4Client(endpoint, version, http_debug=debug)
     try:
         resp, content = cli.modules.show(module_id)
     except exceptions.BaseHTTPError as e:

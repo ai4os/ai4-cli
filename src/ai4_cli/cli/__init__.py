@@ -25,7 +25,8 @@ this by setting the AI4_ENDPOINT environment variable, or by using the
 The CLI tools will load the configuration from the .env.ai4 file in the
 current directory, if it exists. You can also specify a different file using
 the DOTENV_FILE environment variable.
-""")
+"""
+)
 app.add_typer(modules.app, name="modules")
 
 
@@ -47,6 +48,7 @@ class CommonOptions:
 
     endpoint: Optional[str]
     api_version: client.APIVersion
+    debug: bool
 
 
 @app.callback()
@@ -59,6 +61,13 @@ def common(
         callback=version_callback,
         is_eager=True,
         help="Print the version and exit",
+    ),
+    debug: bool = typer.Option(
+        False,
+        "--debug",
+        "-d",
+        envvar="AI4_DEBUG",
+        help="Enable debugging mode.",
     ),
     endpoint: Annotated[
         Optional[str],
@@ -80,4 +89,4 @@ def common(
     ] = client.APIVersion.v1,
 ):
     """Implement common options for the CLI."""
-    ctx.obj = CommonOptions(endpoint, api_version)
+    ctx.obj = CommonOptions(endpoint, api_version, debug)

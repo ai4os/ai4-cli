@@ -26,6 +26,7 @@ The file can contain the following variables:
 - `AI4_API_ENDPOINT`: The URL of the AI4OS compatible API.
 - `AI4_API_VERSION`: The version of the API to use. Currently only `v1` is
   supported.
+- `AI4_DEBUG`: If set to True, the CLI will output debug information.
 
 ## Usage
 

@@ -47,6 +47,20 @@ class AI4Client(object):
         self.session = requests.Session()
         self.http_debug = http_debug
 
+        if self.http_debug:
+            self._logger.setLevel(logging.DEBUG)
+
+            ch = logging.StreamHandler()
+            self._logger.addHandler(ch)
+            self._logger.propagate = False
+            if hasattr(requests, "logging"):
+                rql = requests.logging.getLogger(requests.__name__)
+                rql.addHandler(ch)
+                # Since we have already setup the root logger on debug, we
+                # have to set it up here on WARNING (its original level)
+                # otherwise we will get all the requests logging messages
+                rql.setLevel(logging.WARNING)
+
     @property
     def modules(self):
         """Return the modules client."""
@@ -145,10 +159,9 @@ class AI4Client(object):
         if not self.http_debug:
             return
 
-        if resp.text and resp.status_code != 400:
+        if resp.text:
             try:
                 body = json.loads(resp.text)
-                self._redact(body, ["access", "token", "id"])
             except ValueError:
                 body = None
         else:

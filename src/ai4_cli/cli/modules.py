@@ -29,7 +29,7 @@ def list(
     debug = ctx.obj.debug
 
     cli = client.AI4Client(endpoint, version, http_debug=debug)
-    resp, content = cli.modules.list()
+    _, content = cli.modules.list()
 
     if long:
         rows = [
@@ -65,7 +65,7 @@ def show(
 
     cli = client.AI4Client(endpoint, version, http_debug=debug)
     try:
-        resp, content = cli.modules.show(module_id)
+        _, content = cli.modules.show(module_id)
     except exceptions.BaseHTTPError as e:
         utils.format_rich_error(e)
         raise typer.Exit()

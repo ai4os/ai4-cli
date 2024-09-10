@@ -1,7 +1,7 @@
 """Utilities for the AI4 CLI."""
 
 import os
-from typing import List, Literal, Optional, Union
+from typing import Any, List, Literal, Optional, Union
 
 import rich.panel
 
@@ -70,7 +70,7 @@ def format_rich_ok(message: str) -> None:
 
 
 def format_list(
-    columns: List[str],
+    columns: List[Any],
     items: Union[List[str], List[List[str]]],
 ) -> None:
     """Format a list of items using rich."""

@@ -1,5 +1,6 @@
 """Handle CLI commands for modules."""
 
+import enum
 from typing_extensions import Annotated
 from typing import List, Optional
 
@@ -10,6 +11,15 @@ from ai4_cli import exceptions
 from ai4_cli import utils
 
 app = typer.Typer(help="List and get details of the defined modules and tools.")
+
+
+class ModuleColumns(str, enum.Enum):
+    """Columns to show in the list command."""
+
+    ID = "ID"
+    NAME = "Module name"
+    SUMMARY = "Summary"
+    KEYWORDS = "Keywords"
 
 
 @app.command(name="list")
@@ -23,6 +33,13 @@ def list(
             help="Show more details.",
         ),
     ] = False,
+    sort: Annotated[
+        ModuleColumns,
+        typer.Option(
+            "--sort",
+            help="Sort the modules by the given field.",
+        ),
+    ] = ModuleColumns.ID,
     tags: Annotated[
         Optional[List[str]],
         typer.Option(
@@ -86,14 +103,31 @@ def list(
             for k in content
         ]
 
-        columns = ["ID", "Module name", "Summary", "Keywords"]
+        columns = [
+            str(ModuleColumns.ID),
+            str(ModuleColumns.NAME),
+            str(ModuleColumns.SUMMARY),
+            str(ModuleColumns.KEYWORDS),
+        ]
     else:
         rows = [[k.get("name"), k.get("title"), k.get("summary")] for k in content]
-        columns = ["ID", "Module name", "Summary"]
+        columns = [
+            str(ModuleColumns.ID),
+            str(ModuleColumns.NAME),
+            str(ModuleColumns.SUMMARY),
+        ]
 
+    try:
+        idx = columns.index(sort)
+    except ValueError:
+        e = exceptions.InvalidUsageError(f"Invalid column to sort by: {sort}")
+        utils.format_rich_error(e)
+        raise typer.Exit()
+
+    sorted_rows = sorted(rows, key=lambda x: x[idx])
     utils.format_list(
         columns=columns,
-        items=rows,
+        items=sorted_rows,
     )
 
 

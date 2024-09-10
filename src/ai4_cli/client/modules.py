@@ -11,9 +11,14 @@ class _Modules(object):
         """
         self.client = client
 
-    def list(self):
+    def list(self, filters=None):
         """List all modules."""
-        return self.client.request("catalog/modules/detail", "GET")
+        params = {}
+        for key, value in filters.items():
+            if value is None:
+                continue
+            params[key] = value
+        return self.client.request("catalog/modules/detail", "GET", params=params)
 
     def show(self, module_id):
         """Show details of a module."""

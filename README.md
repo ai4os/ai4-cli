@@ -13,6 +13,22 @@ The reccomended way to install the AI4 CLI tools is using pip:
 
     $ pip install ai4-cli
 
+## Configuration
+
+The `ai4-cli` package will load the needed configuration from environment
+variables whenever possible. In order to do so, it will read the `.env.ai4`
+file in the current working directory, if it exists. If you want to use any
+other file you can set the `AI4_DOTENV_FILE` environment variable to the path
+of the file that you want to use.
+
+The file can contain the following variables:
+
+- `AI4_API_ENDPOINT`: The URL of the AI4OS compatible API.
+- `AI4_API_VERSION`: The version of the API to use. Currently only `v1` is
+  supported.
+
 ## Usage
 
-Work in progress...
+The `ai4-cli` package provides a set of subcommands that can be used to interact
+with the AI4OS platform. The available subcommands can be listed using the
+`ai4-cli --help` command.

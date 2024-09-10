@@ -90,7 +90,11 @@ def list(
         "tags_any": tags_any,
         "not_tags_any": not_tags_any,
     }
-    _, content = cli.modules.list(filters=filters)
+    try:
+        _, content = cli.modules.list(filters=filters)
+    except exceptions.BaseHTTPError as e:
+        utils.format_rich_error(e)
+        raise typer.Exit()
 
     if long:
         rows = [

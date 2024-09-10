@@ -44,6 +44,12 @@ class InvalidUrlError(BaseError):
     message = "URL provided is not valid (%(url)s)"
 
 
+class OIDCAgentError(BaseError):
+    """An error occurred communicating with the OIDC agent."""
+
+    message = "OIDC agent communication error"
+
+
 class BaseHTTPError(BaseError):
     """The base exception class for all HTTP exceptions."""
 

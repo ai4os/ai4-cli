@@ -10,6 +10,7 @@ from urllib import parse
 import requests
 
 import ai4_cli
+from ai4_cli.client import deployments
 from ai4_cli.client import modules
 from ai4_cli.client import tools
 from ai4_cli import exceptions
@@ -24,7 +25,7 @@ class APIVersion(str, enum.Enum):
 class AI4Client(object):
     """Client for the AI4 API."""
 
-    def __init__(self, endpoint, version="v1", http_debug=False):
+    def __init__(self, endpoint, version="v1", http_debug=False, oidc_agent=None):
         """Create a new AI4Client.
 
         :param str endpoint: The URL of the AI4 API.
@@ -42,12 +43,16 @@ class AI4Client(object):
 
         self.url = parse.urljoin(self.endpoint, self.version + "/")
 
+        self._deployments = deployments._Deployments(self)
         self._modules = modules._Modules(self)
         self._tools = tools._Tools(self)
+
         self._logger = logging.getLogger(__name__)
 
         self.session = requests.Session()
         self.http_debug = http_debug
+
+        self.oidc_agent = oidc_agent
 
         if self.http_debug:
             self._logger.setLevel(logging.DEBUG)
@@ -62,6 +67,11 @@ class AI4Client(object):
                 # have to set it up here on WARNING (its original level)
                 # otherwise we will get all the requests logging messages
                 rql.setLevel(logging.WARNING)
+
+    @property
+    def deployments(self):
+        """Return the deployments client."""
+        return self._deployments
 
     @property
     def modules(self):

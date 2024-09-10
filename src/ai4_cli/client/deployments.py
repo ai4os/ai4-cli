@@ -1,8 +1,8 @@
-"""Tools (catalog) HTTP client."""
+"""Deployments HTTP client."""
 
 
-class _Tools(object):
-    """Tools HTTP client."""
+class _Deployments(object):
+    """Deployments HTTP client."""
 
     def __init__(self, client):
         """Create a new instance.
@@ -12,15 +12,16 @@ class _Tools(object):
         self.client = client
 
     def list(self, filters=None):
-        """List all tools."""
+        """List all deployments."""
         params = {}
         if filters:
             for key, value in filters.items():
                 if value is None:
                     continue
                 params[key] = value
-        return self.client.request("catalog/tools/detail", "GET", params=params)
+        token = self.client.oidc_agent.get_token()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
 
-    def show(self, tool_id):
-        """Show details of a tool."""
-        return self.client.request(f"catalog/tools/{tool_id}/metadata", "GET")
+        return self.client.request(
+            "deployments/modules", "GET", params=params, headers=headers
+        )

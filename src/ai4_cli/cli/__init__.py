@@ -2,6 +2,7 @@
 
 import dataclasses
 import os
+import pathlib
 from typing_extensions import Annotated
 from typing import Optional
 
@@ -9,6 +10,7 @@ import dotenv
 import typer
 
 import ai4_cli
+from ai4_cli.cli import deployments
 from ai4_cli.cli import modules
 from ai4_cli.cli import tools
 from ai4_cli.client import client
@@ -28,6 +30,7 @@ current directory, if it exists. You can also specify a different file using
 the DOTENV_FILE environment variable.
 """
 )
+app.add_typer(deployments.app, name="deployment")
 app.add_typer(modules.app, name="module")
 app.add_typer(tools.app, name="tool")
 
@@ -51,6 +54,8 @@ class CommonOptions:
     endpoint: Optional[str]
     api_version: client.APIVersion
     debug: bool
+    oidc_sock: str
+    oidc_account: str
 
 
 @app.callback()
@@ -89,6 +94,25 @@ def common(
             help="The version of the API to use.",
         ),
     ] = client.APIVersion.v1,
+    oidc_sock: Annotated[
+        Optional[pathlib.Path],
+        typer.Option(
+            "--oidc-sock",
+            envvar="OIDC_SOCK",
+            help="The OIDC agent socket to use. Normally this is set by the "
+            "oidc-agent tool, therefore it is not necessary to set it. "
+            "Required for authenticated commands.",
+        ),
+    ] = None,
+    oidc_account: Annotated[
+        Optional[str],
+        typer.Option(
+            "--oidc-account",
+            envvar="OIDC_ACCOUNT",
+            help="The OIDC account to use. This is the <shortname> of the account "
+            "configured in the oidc-agent tool. Required for authenticated commands.",
+        ),
+    ] = None,
 ):
     """Implement common options for the CLI."""
-    ctx.obj = CommonOptions(endpoint, api_version, debug)
+    ctx.obj = CommonOptions(endpoint, api_version, debug, oidc_sock, oidc_account)

@@ -23,7 +23,7 @@ def test_modules_command():
 def test_modules_list_and_wrong_api_version():
     """Test that the modules list command fails with an invalid API version."""
     result = typer.testing.CliRunner().invoke(
-        cli.app, ["modules", "list", "--api-version", "v2"]
+        cli.app, ["--api-version", "v2", "modules", "list"]
     )
     assert result.exit_code == 2
     assert "Invalid value for '--api-version'" in result.output

@@ -1,7 +1,6 @@
 """Handle CLI commands for modules."""
 
 from typing_extensions import Annotated
-from typing import Optional
 
 import typer
 
@@ -13,22 +12,7 @@ app = typer.Typer(help="List and get details of the defined modules and tools.")
 
 @app.command(name="list")
 def list(
-    endpoint: Annotated[
-        Optional[str],
-        typer.Option(
-            "--endpoint",
-            "-e",
-            help="The endpoint to connect to.",
-        ),
-    ] = "https://api.cloud.ai4eosc.eu",
-    version: Annotated[
-        client.APIVersion,
-        typer.Option(
-            "--api-version",
-            "-a",
-            help="The version of the API to use.",
-        ),
-    ] = client.APIVersion.v1,
+    ctx: typer.Context,
     long: Annotated[
         bool,
         typer.Option(
@@ -39,6 +23,9 @@ def list(
     ] = False,
 ):
     """List all modules."""
+    endpoint = ctx.obj.endpoint
+    version = ctx.obj.api_version
+
     cli = client.AI4Client(endpoint, version)
     resp, content = cli.modules.list()
 

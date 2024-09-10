@@ -32,9 +32,11 @@ class AI4Client(object):
         """
         self.endpoint = endpoint
 
-        if version in APIVersion:
-            self.version = version
-        else:
+        # NOTE(aloga): cannot use `version in APIVersion` because this does not work
+        # in Python < 3.12
+        try:
+            self.version = APIVersion[version]
+        except KeyError:
             raise exceptions.InvalidUsageError("Invalid API version: %s" % version)
 
         self.url = parse.urljoin(self.endpoint, self.version + "/")

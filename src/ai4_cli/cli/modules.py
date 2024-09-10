@@ -5,6 +5,7 @@ from typing_extensions import Annotated
 import typer
 
 from ai4_cli.client import client
+from ai4_cli import exceptions
 from ai4_cli import utils
 
 app = typer.Typer(help="List and get details of the defined modules and tools.")
@@ -49,3 +50,22 @@ def list(
         columns=columns,
         items=rows,
     )
+
+
+@app.command(name="show")
+def show(
+    ctx: typer.Context,
+    module_id: str = typer.Argument(..., help="The ID of the module to show."),
+):
+    """Show details of a module."""
+    endpoint = ctx.obj.endpoint
+    version = ctx.obj.api_version
+
+    cli = client.AI4Client(endpoint, version)
+    try:
+        resp, content = cli.modules.show(module_id)
+    except exceptions.BaseHTTPError as e:
+        utils.format_rich_error(e)
+        raise typer.Exit()
+
+    utils.format_dict(content, exclude=["tosca", "continuous_integration"])

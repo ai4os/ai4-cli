@@ -50,6 +50,13 @@ def test_client_get(mock_request, ai4_client):
 
 
 @mock.patch("ai4_cli.client.client.AI4Client.request")
+def test_client_get_with_params(mock_request, ai4_client):
+    """Test the AI4Client.get method with parameters."""
+    ai4_client.get("foo", params={"bar": "baz"})
+    mock_request.assert_called_with("foo", "GET", params={"bar": "baz"})
+
+
+@mock.patch("ai4_cli.client.client.AI4Client.request")
 def test_client_post(mock_request, ai4_client):
     """Test the AI4Client.post method."""
     ai4_client.post("foo", json={"bar": "baz"})

@@ -1,6 +1,7 @@
 """Handle CLI commands for modules."""
 
 from typing_extensions import Annotated
+from typing import List, Optional
 
 import typer
 
@@ -22,6 +23,43 @@ def list(
             help="Show more details.",
         ),
     ] = False,
+    tags: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--tags",
+            help="Filter modules by tags. The given tags must all be present on a "
+            "module to be included in the results. Boolean expression is "
+            "t1 AND t2.",
+        ),
+    ] = None,
+    not_tags: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--not-tags",
+            help="Filter modules by tags. Only the modules that do not have any of the "
+            "given tags will be included in the results. Boolean expression is "
+            "NOT (t1 AND t2).",
+        ),
+    ] = None,
+    tags_any: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--tags-any",
+            help="Filter modules by tags. If any of the given tags is present on a "
+            "module it will be included in the results. Boolean expression is "
+            "t1 OR t2.",
+        ),
+    ] = None,
+    not_tags_any: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--not-tags-any",
+            help="Filter modules by tags. Only the modules that do not have at least "
+            "any of the given tags will be included in the results. "
+            "Boolean expression is "
+            "NOT (t1 OR t2).",
+        ),
+    ] = None,
 ):
     """List all modules."""
     endpoint = ctx.obj.endpoint
@@ -29,7 +67,13 @@ def list(
     debug = ctx.obj.debug
 
     cli = client.AI4Client(endpoint, version, http_debug=debug)
-    _, content = cli.modules.list()
+    filters = {
+        "tags": tags,
+        "not_tags": not_tags,
+        "tags_any": tags_any,
+        "not_tags_any": not_tags_any,
+    }
+    _, content = cli.modules.list(filters=filters)
 
     if long:
         rows = [

@@ -28,8 +28,8 @@ current directory, if it exists. You can also specify a different file using
 the DOTENV_FILE environment variable.
 """
 )
-app.add_typer(modules.app, name="modules")
-app.add_typer(tools.app, name="tools")
+app.add_typer(modules.app, name="module")
+app.add_typer(tools.app, name="tool")
 
 
 DOTENV_FILE = os.getenv("AI4_DOTENV_FILE", ".env.ai4")

@@ -37,7 +37,7 @@ class AI4Client(object):
         try:
             self.version = APIVersion[version]
         except KeyError:
-            raise exceptions.InvalidUsageError("Invalid API version: %s" % version)
+            raise exceptions.InvalidUsageError(f"Invalid API version: {version}")
 
         self.url = parse.urljoin(self.endpoint, self.version + "/")
 
@@ -137,8 +137,19 @@ class AI4Client(object):
         if not kwargs.get("verify", True):
             string_parts.append(" --insecure")
 
-        string_parts.append(" '%s'" % url)
-        string_parts.append(" -X %s" % method)
+        if "params" in kwargs:
+            params = []
+            for k, v in kwargs.get("params", {}).items():
+                if isinstance(v, list):
+                    v = ",".join(v)
+                params.append(f"{k}={v}")
+
+            params = "&".join(params)
+            url = f"{url}?{params}"
+
+        string_parts.append(f" '{url}'")
+
+        string_parts.append(f" -X {method}")
 
         headers = copy.deepcopy(kwargs["headers"])
         self._redact(headers, ["Authorization"])
@@ -146,13 +157,14 @@ class AI4Client(object):
         keys = sorted(headers.keys())
         for name in keys:
             value = headers[name]
-            header = ' -H "%s: %s"' % (name, value)
+            header = f' -H "{name}: {value}"'
             string_parts.append(header)
 
         if "data" in kwargs:
             data = json.loads(kwargs["data"])
-            string_parts.append(" -d '%s'" % json.dumps(data))
-        self._logger.debug("REQ: %s" % "".join(string_parts))
+            data = json.dumps(data)
+            string_parts.append(f" -d '{data}'")
+        self._logger.debug("REQ: " + "".join(string_parts))
 
     def http_log_resp(self, resp):
         """Log the response from an HTTP request."""
@@ -168,12 +180,7 @@ class AI4Client(object):
             body = None
 
         self._logger.debug(
-            "RESP: [%(status)s] %(headers)s\nRESP BODY: " "%(text)s\n",
-            {
-                "status": resp.status_code,
-                "headers": resp.headers,
-                "text": json.dumps(body),
-            },
+            f"RESP: [{resp.status_code}] {resp.headers}\nRESP BODY: {body}"
         )
 
     def _redact(self, target, path, text=None):
@@ -209,7 +216,7 @@ class AI4Client(object):
                 # because in python3 byte string handling is ... ug
                 value = target[key].encode("utf-8")
                 sha1sum = hashlib.sha1(value)  # nosec
-                target[key] = "{SHA1}%s" % sha1sum.hexdigest()
+                target[key] = "{SHA1}" + sha1sum.hexdigest()
 
     def head(self, url, **kwargs):
         """Perform a HEAD request.

@@ -14,3 +14,7 @@ class _Modules(object):
     def list(self):
         """List all modules."""
         return self.client.request("catalog/modules/detail", "GET")
+
+    def show(self, module_id):
+        """Show details of a module."""
+        return self.client.request(f"catalog/modules/{module_id}/metadata", "GET")

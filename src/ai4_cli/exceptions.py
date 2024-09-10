@@ -5,10 +5,14 @@ class BaseError(Exception):
     """The base exception class for all exceptions this library raises."""
 
     message = "An unknown exception occurred."
+    details = "No details available."
 
-    def __init__(self, message=None, **kwargs):
+    def __init__(self, message=None, details=None, **kwargs):
         """Create a new exception with the given message."""
         self.kwargs = kwargs
+
+        if details:
+            self.details = details
 
         if not message:
             try:
@@ -21,7 +25,9 @@ class BaseError(Exception):
                     print("%s: %s" % (name, value))
                 raise
 
-        message = "ERROR: " + message
+        message = "  ERROR: " + message
+        message += "\n\nDETAILS: " + self.details
+
         super(BaseError, self).__init__(message)
 
 
@@ -139,7 +145,7 @@ def from_response(response, body, url, method=None):
 
         if hasattr(body, "keys"):
             message = body.get("message")
-            details = body.get("details")
+            details = body.get("detail")
 
         kwargs["message"] = message
         kwargs["details"] = details

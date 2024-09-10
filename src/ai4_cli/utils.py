@@ -1,7 +1,7 @@
 """Utilities for the AI4 CLI."""
 
 import os
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import rich.panel
 
@@ -86,6 +86,36 @@ def format_list(
         items = [items]
     for row in items:
         table.add_row(*row)
+
+    console = _get_rich_console(stderr=False)
+    console.print(table)
+
+
+def format_dict(
+    dictionary: dict,
+    exclude: Optional[List[str]] = None,
+) -> None:
+    """Format a dictionary using rich."""
+    table = rich.table.Table(
+        border_style=STYLE_TABLE_BORDER,
+        highlight=True,
+    )
+
+    table.add_column("Key")
+    table.add_column("Value")
+
+    for key, value in dictionary.items():
+        if exclude and key in exclude:
+            continue
+
+        if isinstance(value, list):
+            value = ", ".join(value)
+
+        if isinstance(value, dict):
+            table.add_section()
+            value = "\n".join([f"{k}: {v}" for k, v in value.items()])
+
+        table.add_row(key, value)
 
     console = _get_rich_console(stderr=False)
     console.print(table)

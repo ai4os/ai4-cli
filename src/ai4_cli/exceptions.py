@@ -5,7 +5,7 @@ class BaseError(Exception):
     """The base exception class for all exceptions this library raises."""
 
     message = "An unknown exception occurred."
-    details = "No details available."
+    details = ""
 
     def __init__(self, message=None, details=None, **kwargs):
         """Create a new exception with the given message."""
@@ -26,7 +26,8 @@ class BaseError(Exception):
                 raise
 
         message = "  ERROR: " + message
-        message += "\n\nDETAILS: " + self.details
+        if self.details:
+            message += "\n\nDETAILS: " + self.details
 
         super(BaseError, self).__init__(message)
 

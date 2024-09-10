@@ -11,6 +11,7 @@ import requests
 
 import ai4_cli
 from ai4_cli.client import modules
+from ai4_cli.client import tools
 from ai4_cli import exceptions
 
 
@@ -42,6 +43,7 @@ class AI4Client(object):
         self.url = parse.urljoin(self.endpoint, self.version + "/")
 
         self._modules = modules._Modules(self)
+        self._tools = tools._Tools(self)
         self._logger = logging.getLogger(__name__)
 
         self.session = requests.Session()
@@ -65,6 +67,11 @@ class AI4Client(object):
     def modules(self):
         """Return the modules client."""
         return self._modules
+
+    @property
+    def tools(self):
+        """Return the tools client."""
+        return self._tools
 
     # TODO(aloga): implement cache_request
     # @cache_request

@@ -10,6 +10,7 @@ import typer
 
 import ai4_cli
 from ai4_cli.cli import modules
+from ai4_cli.cli import tools
 from ai4_cli.client import client
 
 app = typer.Typer(
@@ -28,6 +29,7 @@ the DOTENV_FILE environment variable.
 """
 )
 app.add_typer(modules.app, name="modules")
+app.add_typer(tools.app, name="tools")
 
 
 DOTENV_FILE = os.getenv("AI4_DOTENV_FILE", ".env.ai4")

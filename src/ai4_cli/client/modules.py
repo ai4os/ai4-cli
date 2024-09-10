@@ -1,4 +1,4 @@
-"""Module HTTP client."""
+"""Modules (catalog) HTTP client."""
 
 
 class _Modules(object):

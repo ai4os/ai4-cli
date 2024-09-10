@@ -252,17 +252,10 @@ def test_http_log_resp_debug_enabled(ai4_client, response_data):
     ai4_client.http_log_resp(response)
 
     ai4_client._logger.debug.assert_called_once_with(
-        "RESP: [%(status)s] %(headers)s\nRESP BODY: %(text)s\n",
-        {
-            "status": 200,
-            "headers": {},
-            "text": (
-                '{"links": '
-                '[{"rel": "self", "href": "https://api.example.com/v1/resource"}, {"rel'
-                '": "next", "href": "https://api.example.com/v1/resource?page=2"}, {"re'
-                'l": "last", "href": "https://api.example.com/v1/resource?page=10"}]}'
-            ),
-        },
+        "RESP: [200] {}\nRESP BODY: "
+        "{'links': [{'rel': 'self', 'href': 'https://api.example.com/v1/resource'}, "
+        "{'rel': 'next', 'href': 'https://api.example.com/v1/resource?page=2'}, "
+        "{'rel': 'last', 'href': 'https://api.example.com/v1/resource?page=10'}]}"
     )
 
 
@@ -287,6 +280,5 @@ def test_http_log_resp_error_response(ai4_client, response_data):
     ai4_client.http_log_resp(response)
 
     ai4_client._logger.debug.assert_called_once_with(
-        "RESP: [%(status)s] %(headers)s\nRESP BODY: %(text)s\n",
-        {"status": 400, "headers": {}, "text": '{"error": "Invalid request"}'},
+        "RESP: [400] {}\nRESP BODY: {'error': 'Invalid request'}"
     )

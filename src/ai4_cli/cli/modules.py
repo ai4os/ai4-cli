@@ -10,7 +10,7 @@ from ai4_cli.client import client
 from ai4_cli import exceptions
 from ai4_cli import utils
 
-app = typer.Typer(help="List and get details of the defined modules and tools.")
+app = typer.Typer(help="List and get details of the defined modules.")
 
 
 class ModuleColumns(str, enum.Enum):
@@ -104,17 +104,17 @@ def list(
         ]
 
         columns = [
-            str(ModuleColumns.ID),
-            str(ModuleColumns.NAME),
-            str(ModuleColumns.SUMMARY),
-            str(ModuleColumns.KEYWORDS),
+            ModuleColumns.ID,
+            ModuleColumns.NAME,
+            ModuleColumns.SUMMARY,
+            ModuleColumns.KEYWORDS,
         ]
     else:
         rows = [[k.get("name"), k.get("title"), k.get("summary")] for k in content]
         columns = [
-            str(ModuleColumns.ID),
-            str(ModuleColumns.NAME),
-            str(ModuleColumns.SUMMARY),
+            ModuleColumns.ID,
+            ModuleColumns.NAME,
+            ModuleColumns.SUMMARY,
         ]
 
     try:

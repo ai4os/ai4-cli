@@ -28,6 +28,7 @@ def authenticated(f):
     CLI, and if not, it will raise an error. If they are present, it will create an
     oidc.OpenIDConnectAgent object and store it in the context object.
     """
+
     @functools.wraps(f)
     def wrapper(ctx: typer.Context, *args, **kwargs):
         """Check if the user is authenticated."""

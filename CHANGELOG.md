@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1](https://github.com/ai4os/ai4-cli/compare/v0.1.0...v0.1.1) (2024-09-11)
+
+
+### Features
+
+* add deployment list command, with OIDC authentication ([e7e8a20](https://github.com/ai4os/ai4-cli/commit/e7e8a202ffc3a3f1c53e89297ce6d3a7a57ce6fa))
+
+
+### Miscellaneous Chores
+
+* release 0.1.1 ([bbbd25b](https://github.com/ai4os/ai4-cli/commit/bbbd25bf378684078c8c02e0b202a464e9324bd6))
+
 ## 0.1.0 (2024-09-10)
 
 

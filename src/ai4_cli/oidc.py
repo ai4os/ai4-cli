@@ -79,7 +79,10 @@ class OpenIDConnectSession(object):
         :param session: A request.Session subclass object, containing a "token"
                         attribute where we will obtain the access token.
         """
-        if not (getattr(session, "token", None) and isinstance(session.token, dict)):
+        if not (
+            getattr(session, "token", None)
+            and isinstance(session.token, dict)  # type: ignore
+        ):
             raise exceptions.InvalidUsageError("Session object is not valid")
         self._session = session
 

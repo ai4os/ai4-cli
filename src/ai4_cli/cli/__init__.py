@@ -54,8 +54,8 @@ class CommonOptions:
     endpoint: Optional[str]
     api_version: client.APIVersion
     debug: bool
-    oidc_sock: str
-    oidc_account: str
+    oidc_sock: Optional[pathlib.Path]
+    oidc_account: Optional[str]
 
 
 @app.callback()

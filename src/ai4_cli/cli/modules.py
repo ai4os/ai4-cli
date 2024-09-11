@@ -124,8 +124,9 @@ def list(
     try:
         idx = columns.index(sort)
     except ValueError:
-        e = exceptions.InvalidUsageError(f"Invalid column to sort by: {sort}")
-        utils.format_rich_error(e)
+        utils.format_rich_error(
+            exceptions.InvalidUsageError(f"Invalid column to sort by: {sort}")
+        )
         raise typer.Exit()
 
     sorted_rows = sorted(rows, key=lambda x: x[idx])

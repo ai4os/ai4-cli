@@ -5,8 +5,6 @@ from typing import Any, List, Literal, Optional, Union
 
 import rich.panel
 
-from ai4_cli import exceptions
-
 # TODO(aloga): Move all this code to a standalone library
 
 _TERMINAL_WIDTH = os.getenv("TERMINAL_WIDTH")
@@ -27,7 +25,7 @@ def _get_rich_console(stderr: bool = False) -> rich.console.Console:
     )
 
 
-def format_rich_error(error: exceptions.BaseError) -> None:
+def format_rich_error(error: Union[str, Exception]) -> None:
     """Format an error using rich."""
     console = _get_rich_console(stderr=True)
     console.print(

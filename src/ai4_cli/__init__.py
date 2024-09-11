@@ -5,7 +5,7 @@ import importlib.metadata
 import pathlib
 
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 
 def extract_version() -> str:

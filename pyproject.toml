@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ai4-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = "AI4 CLI tools and API library"
 authors = [
     "Alvaro Lopez Garcia <aloga@ifca.unican.es>",
